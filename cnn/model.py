@@ -3,7 +3,23 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 class CNN(nn.Module):
+    """
+    A Convolutional Neural Network (CNN) for binary classification of spectrogram images.
+
+    The architecture consists of:
+    - Three convolutional layers with batch normalization, max pooling, and dropout.
+    - Three fully connected layers with dropout.
+    - A final fully connected layer for binary classification.
+    """
     def __init__(self):
+        """
+        Initializes the CNN model by defining its layers.
+
+        Layers include:
+        - Convolutional layers with ReLU activation, batch normalization, and dropout.
+        - Max pooling layers to reduce spatial dimensions.
+        - Fully connected layers for classification.
+        """
         super(CNN, self).__init__()
         self.conv1 = nn.Conv2d(3, 32, 5)
         self.bn1 = nn.BatchNorm2d(32)
@@ -30,6 +46,15 @@ class CNN(nn.Module):
         self.fc4 = nn.Linear(16, 2)
 
     def forward(self, x):
+        """
+        Defines the forward pass of the CNN model.
+
+        Args:
+            x (torch.Tensor): Input tensor of shape (batch_size, 3, height, width).
+
+        Returns:
+            torch.Tensor: Output tensor of shape (batch_size, 2), representing class scores.
+        """
         x = self.pool(F.relu(self.conv1(x)))
         x = self.bn1(x)
         x = self.d1(x)
